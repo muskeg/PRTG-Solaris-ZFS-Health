@@ -32,7 +32,7 @@ print "<prtg>"
 
 for pool in pools_list:
     print "<result>"
-    print "<channel>Utilisation " + pool.get("name") + "</channel>"
+    print "<channel>Utilization " + pool.get("name") + "</channel>"
     print "<value>" + pool.get("used")[:-1] + "</value>"
     print "<unit>percent</unit>"
     print "<limitmaxwarning>90</limitmaxwarning>"
