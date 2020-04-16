@@ -3,7 +3,10 @@
 
 """
 PRTG Advanced SSH Sensor Script
-This polls the server and ZFS pools for stats and health status
+
+This polls a server's ZFS pools for stats and health status
+and prints the results in an XML format PRTG can understand.
+
 """
 
 import os
