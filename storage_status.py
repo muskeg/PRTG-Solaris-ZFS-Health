@@ -17,6 +17,9 @@ def parseSize(size):
     return int(float(number)*units[unit])
 
 
+# List the ZFS pools for information we need:
+# pool name, raw size, allocated and free space, capacity and health
+# and put that information in a list usable for display
 
 pools_list = []
 
@@ -48,6 +51,7 @@ for pool in pools_list:
          print "<warning>1</warning>"
     print "</result>"
 
+# Commented examples of information you can use and send over to PRTG
 """
     print pool.get("name")
     print parseSize(pool.get("rawsize"))
@@ -57,4 +61,5 @@ for pool in pools_list:
     if pool.get("health") != "ONLINE":
         print "<warning>1</warning>"
 """
+
 print "</prtg>"
