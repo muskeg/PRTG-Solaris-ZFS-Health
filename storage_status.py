@@ -3,10 +3,7 @@
 
 """
 PRTG Advanced SSH Sensor Script
-
-This polls a server's ZFS pools for stats and health status
-and prints the results in an XML format PRTG can understand.
-
+This polls the server and ZFS pools for stats and health status
 """
 
 import os
@@ -20,9 +17,6 @@ def parseSize(size):
     return int(float(number)*units[unit])
 
 
-# List the ZFS pools for information we need:
-# pool name, raw size, allocated and free space, capacity and health
-# and put that information in a list usable for display
 
 pools_list = []
 
@@ -33,12 +27,13 @@ for pool_info in zpool_list.split("\n"):
         value = pool_info.split("\t")
         pools_list.append({ 'name': value[0], 'rawsize': value[1], 'allocated': value[2], 'free': value[3], 'used': value[4], 'health': value[5] })
 
+status_text = "All pools healthy"
 
 print "<prtg>"
 
 for pool in pools_list:
     print "<result>"
-    print "<channel>Utilization " + pool.get("name") + "</channel>"
+    print "<channel>Utilisation " + pool.get("name") + "</channel>"
     print "<value>" + pool.get("used")[:-1] + "</value>"
     print "<unit>percent</unit>"
     print "<limitmaxwarning>90</limitmaxwarning>"
@@ -46,15 +41,16 @@ for pool in pools_list:
     print "</result>"
     print "<result>"
     print "<channel>Health " + pool.get("name") + "</channel>"
-    print "<value>0</value>"
-    print "<text>" + pool.get("health") + "</text>"
-    print "<unit>custom</unit>"
     print "<customunit></customunit>"
     if pool.get("health") != "ONLINE":
          print "<warning>1</warning>"
+         print "<value>1</value>"
+         status_text = pool.get("name") + " : " + pool.get("health")
+    else:
+         print "<value>0</value>"
+    print "<unit>custom</unit>"
     print "</result>"
 
-# Commented examples of information you can use and send over to PRTG
 """
     print pool.get("name")
     print parseSize(pool.get("rawsize"))
@@ -64,5 +60,5 @@ for pool in pools_list:
     if pool.get("health") != "ONLINE":
         print "<warning>1</warning>"
 """
-
+print "<text>" + status_text + "</text>"
 print "</prtg>"
