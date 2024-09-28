@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """
@@ -20,7 +20,7 @@ def parseSize(size):
 
 pools_list = []
 
-zpool_list = os.popen("zpool list -Ho name,size,alloc,free,cap,health |grep -v rpool").read()
+zpool_list = os.popen("zpool list -Ho name,size,alloc,free,cap,health").read()
 
 for pool_info in zpool_list.split("\n"):
     if pool_info:
@@ -29,27 +29,27 @@ for pool_info in zpool_list.split("\n"):
 
 status_text = "All pools healthy"
 
-print "<prtg>"
+print("<prtg>")
 
 for pool in pools_list:
-    print "<result>"
-    print "<channel>Utilisation " + pool.get("name") + "</channel>"
-    print "<value>" + pool.get("used")[:-1] + "</value>"
-    print "<unit>percent</unit>"
-    print "<limitmaxwarning>90</limitmaxwarning>"
-    print "<limitmaxerror>99</limitmaxerror>"
-    print "</result>"
-    print "<result>"
-    print "<channel>Health " + pool.get("name") + "</channel>"
-    print "<customunit></customunit>"
+    print("<result>")
+    print("<channel>Utilisation " + pool.get("name") + "</channel>")
+    print("<value>" + pool.get("used")[:-1] + "</value>")
+    print("<unit>percent</unit>")
+    print("<limitmaxwarning>80</limitmaxwarning>")
+    print("<limitmaxerror>90</limitmaxerror>")
+    print("</result>")
+    print("<result>")
+    print("<channel>Health " + pool.get("name") + "</channel>")
+    print( "<customunit></customunit>")
     if pool.get("health") != "ONLINE":
-         print "<warning>1</warning>"
-         print "<value>1</value>"
+         print("<warning>1</warning>")
+         print("<value>1</value>")
          status_text = pool.get("name") + " : " + pool.get("health")
     else:
-         print "<value>0</value>"
-    print "<unit>custom</unit>"
-    print "</result>"
+         print("<value>0</value>")
+    print("<unit>custom</unit>")
+    print("</result>")
 
 """
     print pool.get("name")
@@ -60,5 +60,5 @@ for pool in pools_list:
     if pool.get("health") != "ONLINE":
         print "<warning>1</warning>"
 """
-print "<text>" + status_text + "</text>"
-print "</prtg>"
+print("<text>" + status_text + "</text>")
+print("</prtg>")
